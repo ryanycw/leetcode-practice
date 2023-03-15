@@ -19,19 +19,27 @@ class Solution(object):
         """
         self.ans = float('-inf')
 
-        def traverse(node, cummCount, prevVal):
+        def traverse(node):
             if not node:
-                return
-            traverse(node.left, cummCount, node.val)
-            if node.val == prevVal:
-                cummCount += 1
-            else:
-                cummCount = 0
+                return None, 0
 
-            self.ans = max(self.ans, cummCount)
-            traverse(node.right, cummCount, node.val)
+            cumm = 0
 
-        traverse(root, 0, None)
+            leftVal, leftCumm = traverse(node.left)
+            rightVal, rightCumm = traverse(node.right)
+
+            if leftVal == node.val and rightVal == node.val:
+                cumm = leftCumm + rightCumm + 1
+            elif leftVal == node.val:
+                cumm = leftCumm + 1
+            elif rightVal == node.val:
+                cumm = rightCumm + 1
+
+            self.ans = max(cumm, self.ans)
+
+            return node.val, cumm
+
+        traverse(root)
 
         return self.ans
         # @lc code=end
