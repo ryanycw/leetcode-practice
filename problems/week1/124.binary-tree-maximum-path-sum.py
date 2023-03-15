@@ -17,11 +17,25 @@ class Solution(object):
         :type root: TreeNode
         :rtype: int
         """
+        # took quite a fex fixes
+
         self.ans = float('-inf')
+
+        if not root:
+            return root.val
 
         def traverse(node):
             if not node:
-                return
+                return 0
 
-            maximum = traverse(node.left)
+            leftMax = traverse(node.left) + node.val
+            rightMax = traverse(node.right) + node.val
+            self.ans = max(leftMax, rightMax, leftMax +
+                           rightMax-node.val, node.val, self.ans)
+
+            return max(leftMax, rightMax, node.val)
+
+        traverse(root)
+
+        return self.ans
 # @lc code=end
