@@ -17,27 +17,21 @@ class Solution(object):
         :type root: TreeNode
         :rtype: int
         """
-        self.ans = float('-inf')
+        self.ans = 0
 
         def traverse(node):
             if not node:
-                return None, 0
+                return 0
 
-            cumm = 0
+            leftCumm = traverse(node.left)
+            rightCumm = traverse(node.right)
 
-            leftVal, leftCumm = traverse(node.left)
-            rightVal, rightCumm = traverse(node.right)
+            leftCumm = leftCumm + 1 if node.left and node.left.val == node.val else 0
+            rightCumm = rightCumm + 1 if node.right and node.right.val == node.val else 0
 
-            if leftVal == node.val and rightVal == node.val:
-                cumm = leftCumm + rightCumm + 1
-            elif leftVal == node.val:
-                cumm = leftCumm + 1
-            elif rightVal == node.val:
-                cumm = rightCumm + 1
+            self.ans = max(self.ans, rightCumm + leftCumm)
 
-            self.ans = max(cumm, self.ans)
-
-            return node.val, cumm
+            return max(rightCumm, leftCumm)
 
         traverse(root)
 

@@ -23,28 +23,18 @@ class Solution(object):
         :rtype: Node
         """
 
-        if not root or (not root.left and not root.right):
+        if not root:
             return root
 
-        def traverse(node):
-            if not node.left and not node.right:
+        def traverse(leftNode, rightNode):
+            if not leftNode:
                 return
+            leftNode.next = rightNode
+            traverse(leftNode.left, leftNode.right)
+            traverse(rightNode.left, rightNode.right)
+            traverse(leftNode.right, rightNode.left)
 
-            node.left.next = node.right
-
-            traverse(node.right)
-            traverse(node.left)
-
-        traverse(root)
-
-        """
-        leftTree = root.left
-        rightTree = root.right
-        while leftTree.right:
-            leftTree = leftTree.right
-            rightTree = rightTree.left
-            leftTree.next = rightTree
-        """
+        traverse(root.left, root.right)
 
         return root
 
